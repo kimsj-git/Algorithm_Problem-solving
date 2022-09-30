@@ -10,7 +10,9 @@ def dijkstra(start, end):
     heappush(pq, (0, start))
 
     while pq:
-        w, u = heappop(pq)
+        dist_now, u = heappop(pq)
+        if distance[u] < dist_now:
+            continue
         for weight, nu in graph[u]:
             updated_dist = distance[u] + weight
             if distance[nu] > updated_dist:
