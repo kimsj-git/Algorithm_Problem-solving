@@ -14,6 +14,8 @@ def dijkstra(start, end):
     while pq:
         d, x = heappop(pq)
         
+        # x에 저장된 최소비용이 현재 뽑힌 노드 (d, x)의 d보다 작으면
+        # 노드가 저장된 이후 visited[x]가 갱신된 것이므로 큐의 다음 노드로 넘어간다.
         if visited[x] < d:
             continue
         
