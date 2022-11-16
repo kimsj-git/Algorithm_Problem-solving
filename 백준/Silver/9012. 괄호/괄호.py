@@ -1,26 +1,19 @@
-import sys
-input = sys.stdin.readline
+n = int(input())
 
-T = int(input())
-
-def is_vps(str):
+for tc in range(n):
     stack = []
-    for char in str:
-        if char == '(':
-            stack.append(char)
-        elif char == ')':
+    a = input()
+    for i in a:
+        if i == '(':
+            stack.append(i)
+        elif i == ')':
             if stack:
                 stack.pop()
             else:
-                return False
-    if stack:
-        return False
+                print('NO')
+                break
     else:
-        return True
-
-for tc in range(T):
-    str = input()
-    if is_vps(str):
-        print('YES')
-    else:
-        print('NO')
+        if not stack:
+            print('YES')
+        else:
+            print('NO')
