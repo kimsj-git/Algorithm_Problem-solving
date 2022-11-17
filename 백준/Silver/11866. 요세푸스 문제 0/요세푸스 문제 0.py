@@ -1,20 +1,15 @@
-import sys
-input = sys.stdin.readline
-
-N, K = map(int, input().split())
-
-nums = [i for i in range(1, N+1)]
-
+from collections import deque
+d = deque()
 result = []
-idx = K-1
-count = N-1
-while nums:
-    result.append(nums.pop(idx))
-    if count == 0:
-        break
-    idx = (idx + K - 1)%(count)
-    count -= 1
+n, k = map(int, input().split())
+for i in range(1, n+1):
+    d.append(i)
+while d:
+    for i in range(k-1):
+        d.append(d.popleft())
+    result.append(d.popleft())
 
 print('<', end='')
-print(*result, sep=', ', end='')
+print(', '.join(map(str,result)), end='')
 print('>')
+
