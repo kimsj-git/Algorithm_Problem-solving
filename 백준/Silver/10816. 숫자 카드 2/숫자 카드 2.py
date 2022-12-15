@@ -1,16 +1,17 @@
-from sys import stdin
-from collections import Counter
+import sys, bisect
+input = sys.stdin.readline
 
+N = int(input())
+cards = list(map(int, input().split()))
+M = int(input())
+nums = list(map(int, input().split()))
 
-n = int(stdin.readline())
-a = sorted(list(map(int,stdin.readline().split())))
-m = int(stdin.readline())
-b = list(map(int,stdin.readline().split()))
+cards.sort()
 
-d = Counter(a)
+result = []
+for num in nums:
+    lower_bound = bisect.bisect_left(cards, num)
+    upper_bound = bisect.bisect_right(cards, num)
+    result.append(upper_bound - lower_bound)
 
-for i in b:
-    if i in d:
-        print(d[i], end=' ')
-    else:
-        print(0, end=' ')
+print(*result)
