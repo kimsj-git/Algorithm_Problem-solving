@@ -27,14 +27,14 @@ def cycle(clouds: list, i: int):
         rain_spots.append((r, c))
         visited[r][c] = True
     
-    # 3. 물복사 버그
+    # 2. 물복사 버그
     for r, c in rain_spots:
         for dr, dc in diag:
             nr, nc = r + dr, c + dc
             if 0 <= nr < N and 0 <= nc < N and arr[nr][nc] > 0:
                 arr[r][c] += 1
     
-    # 4. 구름 생성
+    # 3. 구름 생성
     new_clouds = []
     for r in range(N):
         for c in range(N):
