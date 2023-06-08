@@ -93,7 +93,7 @@ def is_cross(L1: tuple, L2: tuple):
             return (True, 0)
     # 4. 한 점에서 선분 교차
     elif flag1 <= 0 and flag2 <= 0:
-        # 3-1. 교차하는 점 구하기
+        # 4-1. 교차하는 점 구하기
         p = intersecting_point(L1, L2)
         return (True, p)
 
