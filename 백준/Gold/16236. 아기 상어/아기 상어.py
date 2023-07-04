@@ -2,6 +2,7 @@ from collections import deque
 
 N = int(input())
 fish = [list(map(int, input().split())) for _ in range(N)]
+drc = [(-1, 0), (0, -1), (0, 1), (1, 0)]  # 상좌우하 델타이동
 
 
 # 다음에 먹을 물고기의 좌표(w)와 거리(nearest)를 반환하는 함수
@@ -15,31 +16,30 @@ def nearest_fish_bfs(arr, n, start, shark_size):
 
     # BFS 탐색
     while queue:
-        v = queue.popleft()
-        dij = [[-1, 0], [0, -1], [0, 1], [1, 0]]  # 상좌우하 델타이동
-        for di, dj in dij:
-            w = [v[0] + di, v[1] + dj]  # 주변 좌표
-            if 0 <= w[0] < N and 0 <= w[1] < N and distance[w[0]][w[1]] == None:
+        r, c = queue.popleft()
+        for dr, dc in drc:
+            nr, nc = r + dr, c + dc  # 주변 좌표
+            if 0 <= nr < N and 0 <= nc < N and distance[nr][nc] == None:
                 # 물고기 없으면: 지나감
-                if arr[w[0]][w[1]] == 0:
-                    queue.append(w)
-                    distance[w[0]][w[1]] = distance[v[0]][v[1]] + 1
+                if arr[nr][nc] == 0:
+                    queue.append((nr, nc))
+                    distance[nr][nc] = distance[r][c] + 1
                 # 큰 물고기: 못지나감(큐에 추가x), 못먹음
-                elif arr[w[0]][w[1]] > shark_size:
+                elif arr[nr][nc] > shark_size:
                     continue
                 # 같은 물고기: 지나감, 못먹음
-                elif arr[w[0]][w[1]] == shark_size:
-                    queue.append(w)
-                    distance[w[0]][w[1]] = distance[v[0]][v[1]] + 1
+                elif arr[nr][nc] == shark_size:
+                    queue.append((nr, nc))
+                    distance[nr][nc] = distance[r][c] + 1
                 # 작은 물고기: 먹을 수 있음
-                elif 0 < arr[w[0]][w[1]] < shark_size:
-                    queue.append(w)
-                    distance[w[0]][w[1]] = distance[v[0]][v[1]] + 1
+                elif 0 < arr[nr][nc] < shark_size:
+                    queue.append((nr, nc))
+                    distance[nr][nc] = distance[r][c] + 1
 
-                    edible.append(w)
+                    edible.append((nr, nc))
                     # nearest에 처음으로 저장되는 값이 최소거리(BFS 탐색)
                     if nearest == 0:
-                        nearest = distance[w[0]][w[1]]
+                        nearest = distance[nr][nc]
 
     # <중요> edible에 포함된 좌표를 정렬해줘야, 순서 조건을 만족할 수 있음
     edible.sort()
@@ -80,7 +80,7 @@ is_shark = False
 for i in range(N):
     for j in range(N):
         if fish[i][j] == 9:
-            shark = [i, j]
+            shark = (i, j)
             is_shark = True
             break
     if is_shark:
