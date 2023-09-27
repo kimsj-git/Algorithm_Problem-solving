@@ -1,41 +1,30 @@
 import sys
+from collections import deque
+input = sys.stdin.readline
 
-n = int(sys.stdin.readline())
+N = int(input())
+arr = [[int(char) for char in input().strip()] for _ in range(N)]
+drc = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
-graph = []
-result = []
-count = 0
+village_cnt = 0
+houses = []
+for sr in range(N):
+    for sc in range(N):
+        if arr[sr][sc] == 0: continue
 
-for _ in range(n):
-    graph.append(list(map(int,sys.stdin.readline().rstrip())))
+        village_cnt += 1
+        queue = deque([(sr, sc)])
+        arr[sr][sc] = 0
+        house_cnt = 1
+        while queue:
+            r, c = queue.popleft()
+            for dr, dc in drc: 
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < N and 0 <= nc < N and arr[nr][nc] == 1:
+                    house_cnt += 1
+                    arr[nr][nc] = 0
+                    queue.append((nr, nc))
+        houses.append(house_cnt)
 
-dx = [0,0,1,-1]
-dy = [1,-1,0,0]
-
-
-def dfs(x,y):
-    global count
-
-    if x < 0 or x >=n or y < 0 or y >= n:
-        return
-
-    if graph[x][y] == 1:
-        count += 1
-        graph[x][y] = 0
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            dfs(nx,ny)
-
-for i in range(n):
-    for j in range(n):
-        if graph[i][j] == 1:
-            dfs(i, j)
-            result.append(count)
-            count = 0
-
-result.sort()
-
-print(len(result))
-for k in result:
-    print(k)
+print(village_cnt)
+print('\n'.join(map(str, sorted(houses))))
