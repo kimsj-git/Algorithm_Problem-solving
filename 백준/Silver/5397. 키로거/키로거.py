@@ -8,7 +8,7 @@ for _ in range(T):
     right = deque([])
     string = input().rstrip()
     for char in string:
-        if char.isalpha() or char.isnumeric():
+        if char.isalnum():
             left.append(char)
         elif char == '-' and left:
             left.pop()
